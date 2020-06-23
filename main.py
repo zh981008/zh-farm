@@ -192,10 +192,12 @@ def write_log(account, pwd):#识别box函数
 def change_acc():#切换账号
     time.sleep(1)
     a.d.click(871, 513)
+    a.d.click(871, 513)
+    a.d.click(871, 513)
     time.sleep(1)
-    a.d.click(165, 411)
+    find_click('main_page/go_back_title.png')
     time.sleep(1)
-    a.d.click(591, 369)
+    find_click('img/ok.jpg')
     time.sleep(1)
 
 def goumaitili():#购买体力，注意此函数参数默认在首页执行，其他地方执行要调整参数
@@ -215,6 +217,18 @@ def goumaitili():#购买体力，注意此函数参数默认在首页执行，�
         a.guochang(screen_shot,['img/zhandou_ok.jpg'], suiji=1)
         a.d.click(100,505)#点击一下首页比较保险
 
+def find_click(name):
+    for i in range(10):
+        screen_shot_ = a.d.screenshot(format="opencv")
+        flag = a.is_there_img(screen_shot_, name)
+        if flag:
+            x,y = flag
+            a.d.click(x, y)
+            time.sleep(0.5)
+            return
+    print("not found"+name)
+
+
 
 def hanghui():#自动行会捐赠
     while True:
@@ -230,14 +244,11 @@ def hanghui():#自动行会捐赠
         screen_shot_ = a.d.screenshot(format="opencv")
         state_flag = a.get_screen_state(screen_shot_)
         if state_flag == 'hanghui':
-            screen_shot = a.d.screenshot(format="opencv")
-            a.guochang(screen_shot, ['img/juanzeng.jpg'],suiji=0)
+            find_click('img/juanzeng.jpg')
             time.sleep(1)
-            screen_shot = a.d.screenshot(format="opencv")
-            a.guochang(screen_shot, ['img/max.jpg'],suiji=0)
+            find_click('img/max.jpg')
             time.sleep(1)
-            screen_shot = a.d.screenshot(format="opencv")
-            a.guochang(screen_shot, ['img/hanghui_ok.jpg'],suiji=0)
+            find_click('img/hanghui_ok.jpg')
             time.sleep(1)
             break
     a.d.click(100, 505)
@@ -309,10 +320,14 @@ def shuatutiaozhan(x,y,direction = True,times=1):
             a.d.click(839, 497)
             break
         time.sleep(0.5)
+    time.sleep(1)
     while True:
         screen_shot_ = a.d.screenshot(format="opencv")
         if a.is_there_img(screen_shot_, 'img/xiayibu.jpg'):
             a.d.click(839, 497)
+            break
+        if a.is_there_img(screen_shot_, 'img/expedition/return_expedition.png'):
+            a.d.click(825, 491)
             break
         time.sleep(0.5)
 
@@ -323,7 +338,47 @@ def shuatutiaozhan(x,y,direction = True,times=1):
             break
         time.sleep(0.5)
 
+def shuatufaster(flag = 1):
+    #进入冒险
+    a.d.click(480, 505)
+    time.sleep(0.5)
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        #print(screen_shot_)
+        print("find zhuxian")
+        a.d.click(480, 505)
+        if a.is_there_img(screen_shot_,'img/zhuxianguangka.png'):
+            break
+    a.d.click(562, 253)
+    time.sleep(1)
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        print("find normal")
+        if a.is_there_img(screen_shot_,'img/normal.jpg'):
+            break
 
+    if flag == 1:
+        a.d.drag(200, 270, 600, 270, 0.1)  # 拖拽到最左
+        time.sleep(2)
+        shuatuzuobiao(518,332,4)#10-5
+        shuatuzuobiao(603,238,4)#10-4
+        shuatuzuobiao(430,239,4)#10-3
+        shuatuzuobiao(287,206,4)#10-2
+        shuatuzuobiao(146,197,4)#10-1
+        shuatuzuobiao(594,429,10)#10-7
+        shuatuzuobiao(411,408,10)#10-6
+        shuatuzuobiao(690,362,30)#10-8
+    else:
+        a.d.drag(600, 270, 200, 270, 0.1)  # 最右
+        time.sleep(2)
+        shuatuzuobiao(583, 259,30)
+
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        if a.is_there_img(screen_shot_,'img/liwu.jpg'):
+            break
+        a.d.click(100,505)
+        time.sleep(1)#保证回到首页
 
 def shuatu():#刷图函数 注意此函数要在首页运行
     #进入冒险
@@ -376,42 +431,77 @@ def shuatu():#刷图函数 注意此函数要在首页运行
     # shuatutiaozhan(685, 395)  # 3-10
     # shuatutiaozhan(821, 353) # 3-11
     # shuatutiaozhan(821, 214) # 3-12
-
-    shuatutiaozhan(199, 243,False)  # 4-1
-    shuatutiaozhan(295, 314,False)  # 4-2
-    shuatutiaozhan(401, 262,False)  # 4-3
-    shuatutiaozhan(510, 249,False)  # 4-4
-    shuatutiaozhan(503, 370,False)  # 4-5
-    shuatutiaozhan(631, 351,False)  # 4-6
-    shuatutiaozhan(257, 224)  # 4-7
-    shuatutiaozhan(360, 280)  # 4-8
-    shuatutiaozhan(480, 228)  # 4-9
-    shuatutiaozhan(608, 255)  # 4-10
-    shuatutiaozhan(746, 249)  # 4-11
-    shuatutiaozhan(773, 326)  # 4-12
-    shuatutiaozhan(645, 418)  # 4-13
-
+    #
+    # for i in range(3):
+    #     screen_shot_ = a.d.screenshot(format="opencv")
+    #     flag = a.is_there_img(screen_shot_, 'img/tiaozhan.jpg')
+    #     if flag:
+    #         x,y = flag
+    #         a.d.click(x, y)
+    #         time.sleep(0.5)
+    #         break
+    # shuatutiaozhan(199, 243,False)  # 4-1
+    # shuatutiaozhan(295, 314,False)  # 4-2
+    # shuatutiaozhan(401, 262,False)  # 4-3
+    # shuatutiaozhan(510, 249,False)  # 4-4
+    # shuatutiaozhan(503, 370,False)  # 4-5
+    # shuatutiaozhan(631, 351,False)  # 4-6
+    # shuatutiaozhan(257, 224)  # 4-7
+    # shuatutiaozhan(360, 280)  # 4-8
+    # shuatutiaozhan(480, 228)  # 4-9
+    # shuatutiaozhan(608, 255)  # 4-10
+    # shuatutiaozhan(746, 249)  # 4-11
+    # shuatutiaozhan(773, 326)  # 4-12
+    # shuatutiaozhan(645, 418)  # 4-13
+    # # #
+    # #
+    # for i in range(5):
+    #     screen_shot_ = a.d.screenshot(format="opencv")
+    #     flag = a.is_there_img(screen_shot_, 'img/guanbi.jpg')
+    #     if flag:
+    #         x,y = flag
+    #         a.d.click(x, y)
+    #         time.sleep(0.5)
+    #         break
     # shuatutiaozhan(134, 187,False)  # 5-1
     # shuatutiaozhan(259, 182,False)  # 5-2
-    # shuatutiaozhan(357, 230,False)  # 5-3
+    # shuatutiaozhan(357, 230,False)  # 5-3P
     # shuatutiaozhan(501, 234,False)  # 5-4
     # shuatutiaozhan(443, 320,False)  # 5-5
     # shuatutiaozhan(353, 407,False)  # 5-6
     # shuatutiaozhan(547, 422,False)  # 5-7
-    #
+
     # shuatutiaozhan(197, 382)  # 5-8
     # shuatutiaozhan(297, 305)  # 5-9
     # shuatutiaozhan(426, 372)  # 5-10
-    # shuatutiaozhan(489, 272)  # 5-11
-    # shuatutiaozhan(600, 243)  # 5-12
-    # shuatutiaozhan(737, 245)  # 5-13
+    shuatutiaozhan(489, 272)  # 5-11
+    shuatutiaozhan(600, 243)  # 5-12
+    shuatutiaozhan(737, 245)  # 5-13
 
-    # shuatutiaozhan (247, 339)  # h1-1
-    # shuatutiaozhan 	(462, 255)  # h1-2
-    # shuatutiaozhan 	(700, 311)  # h1-3
-    # shuatutiaozhan(293, 255)  # h2-1
-    # shuatutiaozhan(464, 347)  # h2-1
-    # shuatutiaozhan(718, 335)  # h2-1
+    for i in range(5):
+        screen_shot_ = a.d.screenshot(format="opencv")
+        flag = a.is_there_img(screen_shot_, 'img/guanbi.jpg')
+        if flag:
+            x,y = flag
+            a.d.click(x, y)
+            time.sleep(0.5)
+            break
+    #
+    shuatutiaozhan(203, 376, False)  # 6-1
+    shuatutiaozhan(301, 291, False)  # 6-2
+    shuatutiaozhan(401, 272, False)  # 6-3
+    shuatutiaozhan(389, 393, False)  # 6-4
+    shuatutiaozhan(522, 349, False)  # 6-5
+    shuatutiaozhan(637, 397, False)  # 6-6
+    shuatutiaozhan(645, 255, False)  # 6-7
+    shuatutiaozhan(771, 228, False)  # 6-8
+
+    shuatutiaozhan (247, 339)  # h1-1
+    shuatutiaozhan 	(462, 255)  # h1-2
+    shuatutiaozhan 	(700, 311)  # h1-3
+    shuatutiaozhan(293, 255)  # h2-1
+    shuatutiaozhan(464, 347)  # h2-1
+    shuatutiaozhan(718, 335)  # h2-1
 
     shuatutiaozhan(255, 259)  # h3-1
     shuatutiaozhan(480, 328)  # h3-1
@@ -449,6 +539,103 @@ def shuatu():#刷图函数 注意此函数要在首页运行
     #     a.d.click(100,505)
     #     time.sleep(1)#保证回到首页
 
+def expedition():
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        flag = a.is_there_img(screen_shot_, 'img/expedition/experience.png')
+        if flag:
+            x,y = flag
+            a.d.click(x, y)
+            time.sleep(0.5)
+            break
+    shuatutiaozhan(658, 149)
+    shuatutiaozhan(658, 149)
+    time.sleep(0.5)
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        flag = a.is_there_img(screen_shot_, 'img/expedition/mana.png')
+        if flag:
+            x, y = flag
+            a.d.click(x, y)
+            time.sleep(0.5)
+            break
+    shuatutiaozhan(658, 149)
+    shuatutiaozhan(658, 149)
+    a.d.click(38, 34)
+    time.sleep(0.5)
+
+def join_farm():
+    a.d.click(96, 507)
+    time.sleep(1)
+    find_click('img/hanghui.png')
+    time.sleep(1)
+    # find_click('img/hanghuisheding.png')
+    # time.sleep(5)
+    # while True:
+    #     a.d.click(855.0, 80.0)
+    #     time.sleep(1)
+    #     screen_shot_ = a.d.screenshot(format="opencv")
+    #     flag = a.is_there_img(screen_shot_, 'img/guild/guild_serch.png')
+    #     if flag:
+    #         time.sleep(1)
+    #         break
+    # time.sleep(1)
+    # a.d.click(493, 180)
+    # time.sleep(2)
+    # a.d(text="请输入行会名").send_keys("zhfarm")
+    # time.sleep(2)
+    # a.d.click(493, 180)
+    # a.d.click(562, 430)
+    # find_click('img/zhfarm.png')
+    # time.sleep(5)
+    # a.d.click(835, 447)
+    # time.sleep(1)
+    # a.d.click(591, 376)
+    # time.sleep(1)
+    a.d.click(113, 499)
+    time.sleep(1)
+    return
+def flatter():
+    a.d.click(96, 507)
+    time.sleep(1)
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        if a.is_there_img(screen_shot_, 'img/hanghui.png'):
+            a.d.click(687, 430)
+            break
+        time.sleep(0.5)
+    time.sleep(1)
+
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        if a.is_there_img(screen_shot_, 'img/guild/member_info.png'):
+            a.d.click(247, 355)
+            break
+        time.sleep(0.5)
+    time.sleep(1)
+
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        if a.is_there_img(screen_shot_, 'img/guild/guild_zhfarm.png'):
+            a.d.click(641, 91)
+            break
+        time.sleep(0.5)
+    time.sleep(1)
+    while True:
+        screen_shot_ = a.d.screenshot(format="opencv")
+        if a.is_there_img(screen_shot_, 'img/ok.jpg'):
+            a.d.click(510, 232)
+            a.d.click(583, 368)
+            break
+        time.sleep(0.5)
+    time.sleep(1)
+    a.d.click(823, 197)
+    time.sleep(1)
+    for i in range(3):
+        a.d.click(92, 495)
+
+# def write_log():
+#     time.sleep(1)
 
 
 
@@ -476,6 +663,9 @@ def dixiacheng():#地下城
                 screen_shot_ = a.d.screenshot(format="opencv")
                 if a.is_there_img(screen_shot_,'img/ok.jpg'):
                     break
+                else:
+                    a.d.click(233, 311)
+                    time.sleep(1)
             a.guochang(screen_shot_, ['img/ok.jpg'],suiji=0)
             time.sleep(1) 
             break
@@ -485,6 +675,10 @@ def dixiacheng():#地下城
         screen_shot_ = a.d.screenshot(format="opencv")
         if a.is_there_img(screen_shot_,'img/chetui.jpg'):
             break
+        else:
+            a.d.click(470, 434)
+            time.sleep(1)
+    time.sleep(1)
     a.d.click(667, 360)#1层
     time.sleep(1)
     a.d.click(833, 456)#挑战
@@ -527,15 +721,12 @@ def dixiacheng():#地下城
             break
     a.d.click(1, 1)#取消显示结算动画
     time.sleep(1)
-    while True:#撤退地下城
-        screen_shot_ = a.d.screenshot(format="opencv")
-        if a.is_there_img(screen_shot_,'img/chetui.jpg'):
-            a.guochang(screen_shot_,['img/chetui.jpg'], suiji=0)
-            screen_shot = a.d.screenshot(format="opencv")
-            a.guochang(screen_shot,['img/ok.jpg'], suiji=0)
-            break
-        a.d.click(1, 1)#
-        time.sleep(1)
+    find_click('img/white_ok.png')
+    time.sleep(1)
+    find_click('img/chetui.jpg')
+    time.sleep(1)
+    find_click('img/ok.jpg')
+    time.sleep(1)
     while True:#首页锁定
         screen_shot_ = a.d.screenshot(format="opencv")
         if a.is_there_img(screen_shot_,'img/liwu.jpg'):
@@ -545,30 +736,62 @@ def dixiacheng():#地下城
 #%%
 #==============================================================================
 #主程序
+#join_farm()
 account_dic = {}
-#change_acc()
+#expedition()
+#join_farm()
+# dixiacheng()
+# change_acc()
+#dixiacheng()
+#dixiacheng()  # 地下城
+# flatter()
+# goumaitili()  # 购买3次体力
+# shuatufaster()  # 刷全部10图3次
+# hanghui()#行会捐赠
+#dixiacheng()
+# change_acc()
+# goumaitili()  # 购买3次体力
+# shuatufaster()  # 刷全部10图3次
 #shuatu()
+
+#hanghui()
+# hanghui()  # 行会捐赠
+# shuatufaster()
+#change_acc()
+# goumaitili()  # 购买3次体力
+# shuatufaster()  # 刷全部10图3次
 with open('zhanghao.txt','r') as f:
     for i,line in enumerate(f):
-        print(line)
+        #print(line)
         account,password = line.split(',')[0:2]
         account_dic[account]=password.strip()
 
 
+# dixiacheng()  # 地下城
+# # goumaitili()#购买3次体力
+# shuatufaster()  # 刷全部10图3次
+#change_acc()
 for account in account_dic:
     print(account, account_dic[account])
     login_auth(account, account_dic[account])
 
     #init_acc()#账号初始化
 
-    #init_home()#初始化，确保进入首页
-    shuatu()
-    shouqu()#收取所有礼物
-    dixiacheng()#地下城
-    goumaitili()#购买3次体力
+    init_home()#初始化，确保进入首页
     shouqurenwu()#收取任务
-    shuatu()#刷全部10图3次
+
+    # shuatu()
+    shouqu()#收取所有礼物
+    flatter()
+    #expedition()
+    #init_home()
     hanghui()#行会捐赠
+    #dixiacheng()#地下城
+    #goumaitili()#购买3次体力
+    #shuatufaster()#刷全部10图3次
+    #join_farm()
+
+
 
     #box管理功能，未启用
     # niudan()#扭蛋扭光钻石

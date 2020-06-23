@@ -33,9 +33,14 @@ class Automator:
                 continue
 
     def login(self,ac,pwd):
+        #time.sleep(3)
         while True:
             if self.d(resourceId="com.bilibili.priconne:id/bsgamesdk_id_welcome_change").exists(timeout=0.1):
-                self.d(resourceId="com.bilibili.priconne:id/bsgamesdk_id_welcome_change").click(timeout=0.1)
+                try:
+                    self.d(resourceId="com.bilibili.priconne:id/bsgamesdk_id_welcome_change").click(timeout=0.1)
+                except:
+                    print("wrong")
+
             if self.d(resourceId="com.bilibili.priconne:id/bsgamesdk_edit_username_login").exists(timeout=0.1):
                 self.d(resourceId="com.bilibili.priconne:id/bsgamesdk_edit_username_login").click(timeout=0.1)
                 break
@@ -65,7 +70,7 @@ class Automator:
         self.d(resourceId="com.bilibili.priconne:id/bagamesdk_auth_success_comfirm").click()
 
 
-    def get_butt_stat(self,screen_shot,template_paths,threshold=0.84):
+    def get_butt_stat(self,screen_shot,template_paths,threshold=0.83):
         #此函数输入要判断的图片path,屏幕截图, 阈值,   返回大于阈值的path,坐标字典,
         self.dWidth, self.dHeight = self.d.window_size()
         return_dic = {}
